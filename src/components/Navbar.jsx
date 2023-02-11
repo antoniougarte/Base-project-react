@@ -1,13 +1,16 @@
 import React, { useRef, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import styled from 'styled-components'
-import 'boxicons';
 import logo from '../assets/logo.png';
 
 
 const NavBar = styled.nav`
-  background-color: var(--secondary-theme-color);
-  padding: 0 1rem;
+  top: 0;
+  position: fixed;
+  width: 100%;
+  z-index: 50;
+  height: 60px;
+  display: flex;
 `
 const Container = styled.div`
   width: 100%;
@@ -29,7 +32,7 @@ const NavLinks = styled.div`
   background-color: var(--secondary-theme-color);
   width: 100%;
   left: 0;
-  top: 64px;
+  top: 60px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -40,6 +43,7 @@ const NavLinks = styled.div`
   }
   a{
     color: var(--primary-text-color);
+    font-weight: bold;
     margin: 1rem;
     text-decoration: none;
     background-image: linear-gradient(currentColor, currentColor);
@@ -47,6 +51,7 @@ const NavLinks = styled.div`
     background-repeat: no-repeat;
     background-size: 0% 2px;
     transition: background-size .3s;
+    color: white;
     @media (min-width: 992px) {
       margin: 0 1rem;
   }
@@ -81,19 +86,43 @@ const NavTheme = styled.div`
 const NavThemeIcon = styled.div`
 cursor: pointer;
   display: flex;
+  margin-right: 0.5rem;
   @media (min-width: 992px) {
     display: none;
   }
 `
 const Select = styled.select`
   font-size: 16px;
+  background-color: black;
+  color: white;
+  border-color: transparent;
   font-family: var(--primary-font-family);
   padding: .4em 1.4em .3em .8em;
   border-radius: .3em;
+  @media (min-width: 992px) {
+    margin-right: 1rem;
+  }
+`
+const SpanIcon = styled.span`
+  display: flex;
+  padding: .1rem;
+  backdrop-filter: blur(10px);
+  margin-left: .5rem;
+  border-radius: 15px;
+  
 `
 
+function Navbar(props) {
 
-function Navbar() {
+  const [navbar, setNavbar] = useState(false);
+  const changeBackground = () => {
+    if (window.pageYOffset >= 1) {
+      setNavbar(true);
+    } else {
+      setNavbar(false);
+    }
+  };
+  window.addEventListener('scroll', changeBackground);
   
   let activeStyle = {
     backgroundSize: "100% 2px",
@@ -113,17 +142,22 @@ function Navbar() {
     setMenuVisible(!menuVisible)
   }
 
+
+
   return (
     <>
-      <NavBar>
+    <header>
+    <NavBar style={{ backgroundColor: navbar ? 'black' : 'transparent' }}>
         <Container>
           <NavFlex>
             <NavLogo>
-              <Link style={{ display: "flex" }} to="/"><img src={logo} width={60} alt="test" /></Link>
+              <Link style={{ display: "flex", marginLeft:"0.5rem"}} to="/"><img src={logo} width={60} alt="test" /></Link>
             </NavLogo>
             <NavLinks menuVisibleProp={menuVisible}>
               <NavLink onClick={handleMenuClick} style={({ isActive }) =>
               isActive ? activeStyle : undefined} to="/about" >About</NavLink>
+              <NavLink onClick={handleMenuClick} style={({ isActive }) =>
+              isActive ? activeStyle : undefined} to="/products" >Products</NavLink>
               <NavLink onClick={handleMenuClick} style={({ isActive }) =>
               isActive ? activeStyle : undefined} to="/contact">Contact</NavLink>
             </NavLinks>
@@ -138,17 +172,19 @@ function Navbar() {
                 value={theme}
                 >
                   <option value="system">💻 system</option>
-                  <option value="dark">🌚 dark</option>
-                  <option value="light">🌞 light</option>
+                  <option value="dark">☾ dark</option>
+                  <option value="light">☀ light</option>
                 </Select>
               </div>
               <NavThemeIcon>
-                <box-icon onClick={handleMenuClick} name='menu' size='md' color="var(--primary-text-color)"></box-icon>
+                <SpanIcon><ion-icon name="menu" onClick={handleMenuClick}></ion-icon></SpanIcon>
               </NavThemeIcon>
             </NavTheme>
           </NavFlex>
         </Container>
       </NavBar>
+    </header>
+      
     </>
   )
 }

@@ -5,7 +5,6 @@ import Header from '../components/Header'
 function PrimaryLayout() {
   return (
     <>
-      <Header />
       <main>
         <Outlet />
       </main>
