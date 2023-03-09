@@ -120,7 +120,7 @@ const Shoes = () => {
     <>
     <Container>
       <h2>Take advantage of limited time offers</h2>
-      <p><span>Load Status : {isLoading?  'Loading ❗': 'loaded ✔'}</span></p>
+      <p><span>Load Status : {isLoading?  'El API está desactivado ❗': 'loaded ✔'}</span></p>
       <Divproducts>
         <div>
           <Spanproducts>
